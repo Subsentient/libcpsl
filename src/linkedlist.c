@@ -1,23 +1,23 @@
 /*This file is part of libcpsl.
  * libcpsl is public domain software; you may use it however you please.
  * Refer to the file UNLICENSE.txt for more information.
- * 2016, by Subsentient, the engerbilled one.
+ * 2016, by Subsentient, the white rat hiding under your chair. Don't look.
  */
 
-///I don't feel like using C89 for the entire thing, but I'll make sure the header file doesn't contain any C99 stuff.
+///I don't feel like using C89 for the entire thing, but I'll make sure the public header file doesn't contain any C99 stuff.
 
 
 #include "cpslinternal.h"
 #include "libcpsl.h"
 
-struct CPSL_List *CPSL_List_NewList(const unsigned PerObjectSize)
+struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize)
 {
-	if (PerObjectSize < sizeof(struct CPSL_List))
+	if (PerElementSize < sizeof(struct CPSL_List))
 	{
 		return NULL;
 	}
 	
-	struct CPSL_List *Core = Alloc.malloc(PerObjectSize);
+	struct CPSL_List *Core = Alloc.malloc(PerElementSize);
 	Core->Data = NULL;
 	Core->Next = NULL;
 	Core->Prev = NULL;
@@ -33,7 +33,7 @@ struct CPSL_List *CPSL_List_NewList(const unsigned PerObjectSize)
 	
 	//Pointer to a single integer that contains the per-object size.
 	Core->PerElementSize = Alloc.malloc(sizeof(unsigned));
-	*(unsigned*)Core->PerElementSize = PerObjectSize;
+	*(unsigned*)Core->PerElementSize = PerElementSize;
 	
 	return Core;
 }

@@ -1,7 +1,7 @@
 /*This file is part of libcpsl.
  * libcpsl is public domain software; you may use it however you please.
  * Refer to the file UNLICENSE.txt for more information.
- * 2016, by Subsentient, the engerbilled one.
+ * 2016, by Subsentient, the white rat hiding under your chair. Don't look.
  */
 
 /** Note to any authors: Do NOT add C99/C11 constructs in this header. We must be able to use this from C89.**/
@@ -13,10 +13,8 @@
 extern "C" {
 #endif /*__cplusplus*/
 
-#include <stddef.h> /*For size_t*/
-
+/**Types**/
 typedef signed char CPSL_Bool;
-typedef int CPSL_DynArrayHandle;
 typedef enum
 { /*The best way to do this actually.*/
 	LISTDEL_FAIL, /*Couldn't delete the element.*/
@@ -24,8 +22,6 @@ typedef enum
 	LISTDEL_HEADMOVED, /*Element was Head and so the Head has changed.*/
 	LISTDEL_LISTDESTROYED /*Was the only, the list is now destroyed.*/
 } CPSL_ListDelStatus;
-
-/**Types**/
 
 
 /*Our list implementation can use 48 bytes on a 64-bit platform, but it's designed to be fast and versatile more than it is memory efficient.*/
@@ -42,27 +38,20 @@ struct CPSL_List
 	struct CPSL_List *Prev; /*Points to the previous element in the list. Will be NULL if used on Head.*/
 	struct CPSL_List **Head; /*Points to a pointer that points to the list head.*/
 	struct CPSL_List **End; /*Points to a pointer that points to the list end.*/
-	const unsigned *PerElementSize; /*Points to a pointer that points to an unsigned int that holds the size per element.*/
-};
-
-struct CPSL_Allocator
-{
-	void *(*malloc)(const size_t Size);
-	void (*free)(void *const Data);
+	const unsigned *PerElementSize; /*Points to an unsigned int that holds the size per element. There's only one for each entire list.*/
 };
 
 /**Functions**/
-void *(*CPSL_DynArray_Get)(CPSL_DynArrayHandle Handle, const unsigned Subscript);
-CPSL_Bool *(*CPSL_DynArray_Set)(CPSL_DynArrayHandle Handle, const unsigned Subscript);
-
+void *CPSL_DynArray_New_Inz(const unsigned PerElementSize, const unsigned NumElementsToAllocate, const void *Initializer, const unsigned NumInitializerElements);
+void *CPSL_DynArray_New(const unsigned PerElementSize, const unsigned NumElementsToAllocate);
 
 /*Linked list functions*/
 
-/*With CPSL_List_NewList(), PerObjectSize should be sizeof(struct CPSL_List) unless you want to do the type punning trick,
+/*With CPSL_List_NewList(), PerElementSize should be sizeof(struct CPSL_List) unless you want to do the type punning trick,
  * (which is why we ask you), but make sure it's at least sizeof(struct CPSL_List) no matter what.
- * It'll return NULL if PerObjectSize is too small.
+ * It'll return NULL if PerElementSize is too small.
  */
-struct CPSL_List *CPSL_List_NewList(const unsigned PerObjectSize);
+struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize);
 
 /* Really, with both of these below functions, it looks up *->Head from any element you give it,
  * so you can just pass it any arbitrary member of a list and it'll figure Head out for itself.
@@ -79,18 +68,31 @@ CPSL_ListDelStatus CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete);
 /**Globals**/
 
 
+
+/**Macros and such.**/
+
 #ifdef __cplusplus
+
 } /*extern "C"*/
 
-/*We need this template for list next-ing because we can't do implicit conversion FROM void in C++.*/
+/*We need this template for list next-ing because we can't do implicit conversion FROM void* in C++.*/
 template <typename T>
 static inline T CPSL_LNEXT(T List)
 {
 	return reinterpret_cast<T>( (((struct CPSL_List*)List)->Next) );
 }
 
+template <typename T>
+static inline T CPSL_LPREV(T List)
+{
+	return reinterpret_cast<T>( (((struct CPSL_List*)List)->Prev) );
+}
+
 #else /*If we are C, we use a simple macro instead of a template.*/
+
 #define CPSL_LNEXT(x) ((void*)x->Next)
+#define CPSL_LPREV(x) ((void*)x->Prev)
+
 #endif /*__cplusplus*/
 
 #endif /*__LIBCPSL_H__*/
