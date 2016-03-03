@@ -1,3 +1,5 @@
 src/*.o
 src/*.gch
-libtesseract.*
+src/*.a
+src/*.so*
+libcpsl.a
