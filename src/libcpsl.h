@@ -13,16 +13,11 @@
 extern "C" {
 #endif /*__cplusplus*/
 
+
+#include <stddef.h> /*For size_t*/
+
 /**Types**/
 typedef signed char CPSL_Bool;
-typedef enum
-{ /*The best way to do this actually.*/
-	LISTDEL_FAIL, /*Couldn't delete the element.*/
-	LISTDEL_OK, /*Deleted normally and efficiently.*/
-	LISTDEL_HEADMOVED, /*Element was Head and so the Head has changed.*/
-	LISTDEL_LISTDESTROYED /*Was the only, the list is now destroyed.*/
-} CPSL_ListDelStatus;
-
 
 /*Our list implementation can use 48 bytes on a 64-bit platform, but it's designed to be fast and versatile more than it is memory efficient.*/
 struct CPSL_List
@@ -41,29 +36,58 @@ struct CPSL_List
 	const unsigned *PerElementSize; /*Points to an unsigned int that holds the size per element. There's only one for each entire list.*/
 };
 
+struct CPSL_HashElement
+{
+	struct CPSL_HashElement *Next;
+	const char *Key;
+	void *Data;
+	unsigned DataSize;
+};
+
+#define HASH_NUMLISTS 127
+
+typedef struct CPSL_HashElement **CPSL_Hash;
+
 /**Functions**/
+
+
+void CPSL_Hash_Destroy(CPSL_Hash Hash);
+struct CPSL_HashElement *CPSL_Hash_Get(const CPSL_Hash Hash, const char *const Key);
+CPSL_Hash CPSL_Hash_New(void);
+CPSL_Bool CPSL_Hash_Set(const CPSL_Hash Hash, const char *const Key, const void *const InData, const size_t InDataSize);
+
+/*The initialization function. You don't need to provide a realloc() implementation, but it's more efficient if you do.*/
+void CPSL_Configure(void *(*malloc)(size_t), void (*free)(void *const), void *(*realloc_isoptional)(void *const, const size_t));
+
+/*Dynamic array functions.*/
 void *CPSL_DynArray_New_Inz(const unsigned PerElementSize, const unsigned NumElementsToAllocate, const void *Initializer, const unsigned NumInitializerElements);
 void *CPSL_DynArray_New(const unsigned PerElementSize, const unsigned NumElementsToAllocate);
+void CPSL_DynArray_Destroy(void *Array);
+unsigned CPSL_DynArray_Capacity(void *Array);
+unsigned CPSL_DynArray_ElementSize(void *Array);
+void *CPSL_DynArray_Grow(void *Array, const unsigned NumElementsToAdd);
+void *CPSL_DynArray_Shrink(void *Array, const unsigned NumElementsToRemove);
 
 /*Linked list functions*/
 
-/*With CPSL_List_NewList(), PerElementSize should be sizeof(struct CPSL_List) unless you want to do the type punning trick,
+/**With CPSL_List_NewList(), PerElementSize should be sizeof(struct CPSL_List) unless you want to do the type punning trick,
  * (which is why we ask you), but make sure it's at least sizeof(struct CPSL_List) no matter what.
  * It'll return NULL if PerElementSize is too small.
- */
+ **/
 struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize);
 
-/* Really, with both of these below functions, it looks up *->Head from any element you give it,
+/** Really, with both of these below functions, it looks up *->Head from any element you give it,
  * so you can just pass it any arbitrary member of a list and it'll figure Head out for itself.
- */
+ **/
 CPSL_Bool CPSL_List_DestroyList(struct CPSL_List *AnyListElement);
+
 struct CPSL_List *CPSL_List_AddNode(struct CPSL_List *AnyListElement);
 
-
-/*CPSL_List_DeleteNode() can change *->Head, so it's best not to rely on the value of *->Head, but instead ->Head.
+/**CPSL_List_DeleteNode() can change *->Head, so it's best not to rely on the value of *->Head, but instead ->Head.
  * It will delete the entire list if you are deleting the last element. You're warned.
- */
-CPSL_ListDelStatus CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete);
+ **/
+struct CPSL_List *CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete);
+
 
 /**Globals**/
 

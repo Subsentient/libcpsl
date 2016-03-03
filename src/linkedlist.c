@@ -23,7 +23,7 @@ struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize)
 	Core->Prev = NULL;
 
 	
-	/*Pointer to a pointer to the end and head, respectively of the list.
+	/*Pointer to a pointer to the end and head, respectively, of the list.
 	* The reason we use a pointer to pointer is that End and possibly Head will change frequently and we
 	* don't want to iterate through the whole list to change it for each element.*/
 	Core->End = Alloc.malloc(sizeof(struct CPSL_List*));
@@ -102,9 +102,9 @@ struct CPSL_List *CPSL_List_AddNode(struct CPSL_List *ListElement)
 	return NewNode;
 }
 
-CPSL_ListDelStatus CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete)
+struct CPSL_List *CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete)
 { //Note that we use the ->Head member to figure out which list it's from.
-	if (!NodeToDelete) return LISTDEL_FAIL;
+	if (!NodeToDelete) return NULL; //You gotta be pretty dumb to pass us a null pointer.
 
 	if (NodeToDelete == *NodeToDelete->Head)
 	{
@@ -114,13 +114,15 @@ CPSL_ListDelStatus CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete)
 			*NodeToDelete->Head = NodeToDelete->Next;
 			NodeToDelete->Next->Prev = NULL;
 			Alloc.free(NodeToDelete);
-			return LISTDEL_HEADMOVED;
+			return NodeToDelete->Next; //Give them the new head.
 		}
 
 		//Ahh, just us. So the list dies now.
 		CPSL_List_DestroyList(NodeToDelete);
-		return LISTDEL_LISTDESTROYED;
+		return NULL; //Tells them the list is gone.
 	}
+	
+	struct CPSL_List *const RetVal = *NodeToDelete->Head;
 	
 	if (NodeToDelete == *NodeToDelete->End)
 	{
@@ -134,5 +136,5 @@ CPSL_ListDelStatus CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete)
 	}
 	
 	Alloc.free(NodeToDelete);
-	return LISTDEL_OK;
+	return RetVal;
 }
