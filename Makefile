@@ -27,17 +27,11 @@ install-hdr:
 	mkdir -p $(PREFIX)/include/
 	install -v -m 0644 libcpsl.h $(PREFIX)/include/
 
-install-shared:
-	mkdir -p $(PREFIX)/lib/
-	install -v -m 0644 libcpsl.so.0.1 $(PREFIX)/lib/
-	ln -sf libcpsl.so.0.1 $(PREFIX)/lib/libcpsl.so.0
-	ln -sf libcpsl.so.0.1 $(PREFIX)/lib/libcpsl.so
-
 install-static:
 	mkdir -p $(PREFIX)/lib/
 	install -v -m 0644 libcpsl.a $(PREFIX)/lib/
 
-install-all: install-hdr install-shared install-static
+install-all: install-hdr install-static
 
 install: install-all
 
