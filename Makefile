@@ -8,8 +8,8 @@ OBJECTS = linkedlist.o dynarray.o settings.o texthash.o
 all: linkedlist dynarray settings texthash
 	@echo ""
 	@echo "Building libcpsl.a..."
-	$(AR) rc ../libcpsl.a $(OBJECTS)
-	$(RANLIB) ../libcpsl.a
+	$(AR) rc libcpsl.a $(OBJECTS)
+	$(RANLIB) libcpsl.a
 
 linkedlist:
 	$(CC) -c linkedlist.c $(CFLAGS)

@@ -1,5 +1,5 @@
-src/*.o
-src/*.gch
-src/*.a
-src/*.so*
+*.o
+*.gch
+*.a
+*.so*
 libcpsl.a
