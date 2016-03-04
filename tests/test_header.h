@@ -4,7 +4,7 @@
 #include <signal.h>
 
 #define RUNTEST(x) ((CurrentTest = #x), x(), printf("Subtest \"%s()\" passed.\n", #x))
-#define FAILTEST(x, y) (fprintf(stderr, "Subtest \"%s()\" failed with reason: \"%s\"\n", #x, y), exit(1))
+#define FAILTEST(y) (fprintf(stderr, "Subtest \"%s()\" failed with reason: \"%s\"\n", CurrentTest, y), exit(1))
 
 static const char *CurrentTest = NULL;
 

@@ -9,17 +9,17 @@ void TestInitialization(void)
 	
 	if (Array[0] != 1 || Array[1] != 2 || Array[2] != 3)
 	{
-		FAILTEST(TestInitialization, "Initialization failed, there appears to be memory corruption or copying failure.");
+		FAILTEST("Initialization failed, there appears to be memory corruption or copying failure.");
 	}
 	
 	if (CPSL_DynArray_Capacity(DynArray) != 100)
 	{
-		FAILTEST(TestInitialization, "Capacity does not match the requested allocated size.");
+		FAILTEST("Capacity does not match the requested allocated size.");
 	}
 	
 	if (CPSL_DynArray_ElementSize(DynArray) != sizeof(int))
 	{
-		FAILTEST(TestInitialization, "Element size is not correct.");
+		FAILTEST("Element size is not correct.");
 	}
 	
 	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
@@ -37,12 +37,12 @@ void TestNoInitializer(void)
 	
 	if (CPSL_DynArray_Capacity(DynArray) != 150)
 	{
-		FAILTEST(TestNoInitializer, "Capacity does not match the requested allocated size.");
+		FAILTEST("Capacity does not match the requested allocated size.");
 	}
 	
 	if (CPSL_DynArray_ElementSize(DynArray) != sizeof(int))
 	{
-		FAILTEST(TestNoInitializer, "Element size is not correct.");
+		FAILTEST("Element size is not correct.");
 	}
 	
 	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
@@ -63,7 +63,7 @@ void TestResize(void)
 	
 	if (CPSL_DynArray_Capacity(DynArray) != 250)
 	{
-		FAILTEST(TestResize, "Grow test failed to allocate to the correct size, or is returning bad data.");
+		FAILTEST("Grow test failed to allocate to the correct size, or is returning bad data.");
 	}
 	
 	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
@@ -77,7 +77,7 @@ void TestResize(void)
 	
 	if (CPSL_DynArray_Capacity(DynArray) != 50)
 	{
-		FAILTEST(TestResize, "Shrink test failed to properly shrink the capacity to the correct size, or is returning bad data.");
+		FAILTEST("Shrink test failed to properly shrink the capacity to the correct size, or is returning bad data.");
 	}
 	
 	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
