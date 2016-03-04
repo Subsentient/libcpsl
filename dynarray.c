@@ -6,8 +6,8 @@
 
 
 ///You know, I don't think the dynarray thing is as useful as it could be.
-#include "cpslinternal.h"
 #include "libcpsl.h"
+#include "cpslinternal.h"
 
 static void *CPSL_DynArray_ChangeSize(void *Array, const int NumElementsToChange);
 

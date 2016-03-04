@@ -101,6 +101,18 @@ struct CPSL_List *CPSL_List_DeleteNode(struct CPSL_List *NodeToDelete);
 
 /*We need this template for list next-ing because we can't do implicit conversion FROM void* in C++.*/
 template <typename T>
+static inline T CPSL_LHEAD(T List)
+{
+	return reinterpret_cast<T>( *(((struct CPSL_List*)List)->Head) );
+}
+
+template <typename T>
+static inline T CPSL_LEND(T List)
+{
+	return reinterpret_cast<T>( *(((struct CPSL_List*)List)->End) );
+}
+
+template <typename T>
 static inline T CPSL_LNEXT(T List)
 {
 	return reinterpret_cast<T>( (((struct CPSL_List*)List)->Next) );
@@ -114,8 +126,10 @@ static inline T CPSL_LPREV(T List)
 
 #else /*If we are C, we use a simple macro instead of a template.*/
 
-#define CPSL_LNEXT(x) ((void*)x->Next)
-#define CPSL_LPREV(x) ((void*)x->Prev)
+#define CPSL_LNEXT(x) ((void*)((struct CPSL_List*)x)->Next)
+#define CPSL_LPREV(x) ((void*)((struct CPSL_List*)x)->Prev)
+#define CPSL_LHEAD(x) ((void*)*((struct CPSL_List*)x)->Head)
+#define CPSL_LEND(x)  ((void*)*((struct CPSL_List*)x)->End)
 
 #endif /*__cplusplus*/
 

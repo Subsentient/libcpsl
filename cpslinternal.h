@@ -7,13 +7,15 @@
 #ifndef __CPSL_INTERNALHEADER__
 #define __CPSL_INTERNALHEADER__
 
-#ifndef NULL
-#define NULL ((void*)0)
-#endif //NULL
 enum { false, true };
 
 #include <stddef.h> /*For size_t*/
 #include <stdint.h>
+
+//NULL is defined in a bunch of places on gcc/clang/glibc compilers/platforms, so let's put it after the headers as to not be caught by surprise.
+#ifndef NULL
+#define NULL ((void*)0)
+#endif //NULL
 
 struct CPSL_Allocator
 {

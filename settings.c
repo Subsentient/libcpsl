@@ -4,8 +4,8 @@
  * 2016, by Subsentient, the white rat hiding under your chair. Don't look.
  */
  
-#include "cpslinternal.h"
 #include "libcpsl.h"
+#include "cpslinternal.h"
 
 struct CPSL_Allocator Alloc;
 

@@ -7,15 +7,12 @@
 ///I don't feel like using C89 for the entire thing, but I'll make sure the public header file doesn't contain any C99 stuff.
 
 
-#include "cpslinternal.h"
 #include "libcpsl.h"
+#include "cpslinternal.h"
 
 struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize)
-{
-	if (PerElementSize < sizeof(struct CPSL_List))
-	{
-		return NULL;
-	}
+{	
+	if (PerElementSize < sizeof(struct CPSL_List)) return NULL;
 	
 	struct CPSL_List *Core = Alloc.malloc(PerElementSize);
 	Core->Data = NULL;
@@ -82,17 +79,15 @@ struct CPSL_List *CPSL_List_AddNode(struct CPSL_List *ListElement)
 	struct CPSL_List *NewNode = Alloc.malloc(*ListElement->PerElementSize);
 	
 	NewNode->Data = NULL; //Keep it empty for the user.
-	
 	NewNode->Next = NULL; //Nothing after us.
-	
 	NewNode->Prev = *ListElement->End; //Since we're now the end node, the previous end node is our Prev.
 	
 	//Tell the old end node that we're now the end node.
 	(*ListElement->End)->Next = NewNode;
 	
-	//We must remember our starting place.
+	//We must remember our starting and ending places.
 	NewNode->Head = ListElement->Head;
-	
+	NewNode->End = ListElement->End;
 	//And we must remember how big we are each.
 	NewNode->PerElementSize = ListElement->PerElementSize;
 	
