@@ -12,6 +12,7 @@ static void SigHandler(const int Signal);
 
 static inline void InitTestUnit(const char *const TestName)
 {
+	printf("Using libcpsl version %d.%d\n", CPSL_MAJORVERSION, CPSL_MINORVERSION);
 	CPSL_Configure(malloc, free, realloc);
 	signal(SIGABRT, SigHandler);
 	signal(SIGSEGV, SigHandler);
