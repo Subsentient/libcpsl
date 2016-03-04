@@ -3,7 +3,7 @@
 #include "../libcpsl.h"
 #include <signal.h>
 
-#define RUNTEST(x) ((CurrentTest = #x), x(), printf("Test \"%s\" passed.\n", #x))
+#define RUNTEST(x) ((CurrentTest = #x), x(), printf("Subtest \"%s\" passed.\n", #x))
 
 static const char *CurrentTest = NULL;
 
@@ -19,7 +19,7 @@ static inline void InitTestUnit(void)
 	signal(SIGFPE, SigHandler);
 	signal(SIGQUIT, SigHandler);
 	signal(SIGBUS, SigHandler);
-	
+	puts("Running test \"" __FILE__ "\"");
 }
 
 static void SigHandler(const int Signal)
