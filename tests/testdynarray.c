@@ -1,6 +1,5 @@
 #include "test_header.h"
 
-
 void TestInitialization(void)
 {
 	int Array[3] = { 1, 2, 3 };
@@ -79,6 +78,24 @@ void TestResize(void)
 	{
 		FAILTEST("Shrink test failed to properly shrink the capacity to the correct size, or is returning bad data.");
 	}
+	
+	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
+	{
+		DynArray[Inc] = 0;
+		int Gerbil = DynArray[Inc];
+		(void)Gerbil;
+	}
+	
+	//Try without realloc
+	CPSL_Configure(malloc, free, NULL);
+	
+	DynArray = CPSL_DynArray_Grow(DynArray, 25);
+	
+	if (CPSL_DynArray_Capacity(DynArray) != 75)
+	{
+		FAILTEST("Grow test without realloc failed.");
+	}
+	CPSL_Configure(malloc, free, realloc);
 	
 	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
 	{
