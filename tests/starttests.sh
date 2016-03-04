@@ -14,8 +14,8 @@ echo ""
 echo "Executing unit tests..."
 for b in bin/*
 do
-	echo "EXEC  $b"
 	echo ""
+	echo "EXEC  $b"
 	if ! $b
 	then
 		exit 1

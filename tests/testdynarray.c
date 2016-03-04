@@ -22,6 +22,12 @@ void TestInitialization(void)
 		FAILTEST(TestInitialization, "Element size is not correct.");
 	}
 	
+	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
+	{
+		DynArray[Inc] = 0;
+		int Gerbil = DynArray[Inc];
+		(void)Gerbil;
+	}
 	CPSL_DynArray_Destroy(DynArray);
 }
 
@@ -37,6 +43,13 @@ void TestNoInitializer(void)
 	if (CPSL_DynArray_ElementSize(DynArray) != sizeof(int))
 	{
 		FAILTEST(TestNoInitializer, "Element size is not correct.");
+	}
+	
+	for (int Inc = 0; Inc < CPSL_DynArray_Capacity(DynArray); ++Inc)
+	{
+		DynArray[Inc] = 0;
+		int Gerbil = DynArray[Inc];
+		(void)Gerbil;
 	}
 	
 	CPSL_DynArray_Destroy(DynArray);
