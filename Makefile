@@ -41,15 +41,9 @@ uninstall:
 
 test:
 	@echo "Checking if libcpsl.a is compiled..."
-	test -e libcpsl.a
 	@echo ""
-	@echo "Compiling unit tests..."
-	$(CC) $(CFLAGS) tests/testlinkedlist.c -o tests/bin/testlinkedlist libcpsl.a
-	@echo ""
-	@echo "Executing unit tests..."
-	@echo ""
-	@echo "Testing linked lists..."
-	@tests/bin/testlinkedlist
+	@test -e libcpsl.a
+	@tests/starttests.sh "$(CC)" "$(CFLAGS)"
 	@echo ""
 	@echo "All tests passed."
 	

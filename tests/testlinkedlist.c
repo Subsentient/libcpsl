@@ -62,7 +62,7 @@ void TestChunky(void)
 int main(void)
 {
 	//Initialization function.
-	InitTestUnit();
+	InitTestUnit("linked lists");
 	
 	RUNTEST(TestRaw);
 	RUNTEST(TestChunky);

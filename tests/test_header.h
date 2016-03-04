@@ -9,7 +9,7 @@ static const char *CurrentTest = NULL;
 
 static void SigHandler(const int Signal);
 
-static inline void InitTestUnit(void)
+static inline void InitTestUnit(const char *const TestName)
 {
 	CPSL_Configure(malloc, free, realloc);
 	signal(SIGABRT, SigHandler);
@@ -19,7 +19,7 @@ static inline void InitTestUnit(void)
 	signal(SIGFPE, SigHandler);
 	signal(SIGQUIT, SigHandler);
 	signal(SIGBUS, SigHandler);
-	puts("Running test \"" __FILE__ "\"");
+	printf("Running test \"%s\"...\n", TestName);
 }
 
 static void SigHandler(const int Signal)
