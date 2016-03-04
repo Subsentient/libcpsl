@@ -52,7 +52,7 @@ typedef struct CPSL_HashElement **CPSL_Hash;
 
 
 void CPSL_Hash_Destroy(CPSL_Hash Hash);
-struct CPSL_HashElement *CPSL_Hash_Get(const CPSL_Hash Hash, const char *const Key);
+struct CPSL_HashElement *CPSL_Hash_Get(const CPSL_Hash Hash, const char *const Key, void *OutData);
 CPSL_Hash CPSL_Hash_New(void);
 CPSL_Bool CPSL_Hash_Set(const CPSL_Hash Hash, const char *const Key, const void *const InData, const size_t InDataSize);
 

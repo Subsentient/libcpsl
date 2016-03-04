@@ -112,10 +112,16 @@ CPSL_Bool CPSL_Hash_Set(const CPSL_Hash Hash, const char *const Key, const void 
 	return true;
 }
 
-struct CPSL_HashElement *CPSL_Hash_Get(const CPSL_Hash Hash, const char *const Key)
+struct CPSL_HashElement *CPSL_Hash_Get(const CPSL_Hash Hash, const char *const Key, void *OutData)
 {
 	struct CPSL_HashElement **List = CPSL_HashStatic_JumpToList(*Key, Hash);
-	return CPSL_HashStatic_LookupListNode(*List, Key);
+	struct CPSL_HashElement *Element = CPSL_HashStatic_LookupListNode(*List, Key);
+	
+	if (!Element) return NULL;
+	
+	if (OutData != NULL) MemCopy(OutData, Element->Data, Element->DataSize);
+	
+	return Element;
 }
 
 static struct CPSL_HashElement **CPSL_HashStatic_JumpToList(const char FirstChar, struct CPSL_HashElement **List)

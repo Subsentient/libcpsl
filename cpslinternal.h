@@ -56,7 +56,7 @@ static inline size_t StringLen(register const char *String)
 {
 	register size_t Inc = 0;
 	
-	while (*String) ++Inc;
+	while (*String) ++Inc, ++String;
 	
 	return Inc;
 }
