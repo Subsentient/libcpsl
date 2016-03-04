@@ -16,5 +16,8 @@ for b in bin/*
 do
 	echo "EXEC  $b"
 	echo ""
-	$b
+	if ! $b
+	then
+		exit 1
+	fi
 done

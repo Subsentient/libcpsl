@@ -76,22 +76,23 @@ void *CPSL_DynArray_Shrink(void *Array, const unsigned NumElementsToRemove)
 
 static void *CPSL_DynArray_ChangeSize(void *Array, const int NumElementsToChange)
 {
-	void *Core = (struct CPSL_DynArray*)Array - 1;
-	const unsigned CurrentSize = ((struct CPSL_DynArray*)Core)->AllocatedElements;
-	const unsigned PerElementSize = ((struct CPSL_DynArray*)Core)->PerElementSize;
+	struct CPSL_DynArray *Core = (struct CPSL_DynArray*)Array - 1;
+	const unsigned CurrentSize = Core->AllocatedElements;
+	const unsigned PerElementSize = Core->PerElementSize;
 	
 	if (Alloc.realloc) //We have a realloc, which makes things much easier.
 	{
-		void *New = Alloc.realloc(Core, sizeof(struct CPSL_DynArray) + (PerElementSize * (CurrentSize + NumElementsToChange)));
-		((struct CPSL_DynArray*)New)->AllocatedElements += NumElementsToChange;
-		return New;
+		struct CPSL_DynArray *New = Alloc.realloc(Core, sizeof(struct CPSL_DynArray) + (PerElementSize * (CurrentSize + NumElementsToChange)));
+		New->AllocatedElements += NumElementsToChange;
+		return New + 1;
 	}
 	
 	//We don't have realloc, so we gotta do it manually.
-	void *New = Alloc.malloc(sizeof(struct CPSL_DynArray) + (PerElementSize * (CurrentSize + NumElementsToChange)));
+	struct CPSL_DynArray *New = Alloc.malloc(sizeof(struct CPSL_DynArray) + (PerElementSize * (CurrentSize + NumElementsToChange)));
 	MemCopy(New, Core, sizeof(struct CPSL_DynArray) + (PerElementSize * CurrentSize));
 	Alloc.free(Core); //We'll definitely have a different pointer without realloc, so we gotta delete the old one.
+	New->AllocatedElements += NumElementsToChange;
 	
-	return New;
+	return New + 1;
 }
 
