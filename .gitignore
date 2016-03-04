@@ -2,4 +2,7 @@
 *.gch
 *.a
 *.so*
+tests/*.gch
+tests/*.o
+tests/bin/*
 libcpsl.a

@@ -1,7 +1,7 @@
 CC = gcc
 AR = ar
 RANLIB = ranlib
-CFLAGS = -std=gnu99 -pedantic -Wall -O3
+CFLAGS = -std=gnu99 -pedantic -Wall -O0 -g3
 PREFIX = /usr
 OBJECTS = linkedlist.o dynarray.o settings.o texthash.o
 
