@@ -24,6 +24,6 @@ static inline void InitTestUnit(void)
 
 static void SigHandler(const int Signal)
 {
-	fprintf(stderr, "Received signal number %d while running test %s\n", Signal, CurrentTest);
+	fprintf(stderr, "Received signal number %d while running test \"%s()\"\n", Signal, CurrentTest);
 	exit(1);
 }

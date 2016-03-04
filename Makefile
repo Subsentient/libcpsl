@@ -10,6 +10,7 @@ all: linkedlist dynarray settings texthash
 	@echo "Building libcpsl.a..."
 	$(AR) rc libcpsl.a $(OBJECTS)
 	$(RANLIB) libcpsl.a
+	$(MAKE) test
 
 linkedlist:
 	$(CC) -c linkedlist.c $(CFLAGS)
@@ -39,9 +40,24 @@ uninstall:
 	rm -vf $(PREFIX)/include/libcpsl.h
 	rm -vf $(PREFIX)/lib/libcpsl.*
 
+test:
+	@echo ""
+	@echo "Compiling unit tests..."
+	$(CC) $(CFLAGS) tests/testlinkedlist.c -o tests/bin/testlinkedlist libcpsl.a
+	@echo ""
+	@echo "Executing unit tests..."
+	@echo ""
+	@echo "Testing linked lists..."
+	@tests/bin/testlinkedlist
+	@echo ""
+	@echo "All tests passed."
+	
 clean:
 	rm -vf *.a
 	rm -vf *.o
 	rm -vf libcpsl*.so*
 	rm -vf *.gch
+	rm -vf tests/*.o
+	rm -vf tests/*.gch
+	rm -vf tests/bin/*
 distclean: clean
