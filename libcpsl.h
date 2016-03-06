@@ -9,7 +9,7 @@
 #ifndef __LIBCPSL_H__
 #define __LIBCPSL_H__
 
-#define CPSL_MAJORVERSION 0x01
+#define CPSL_MAJORVERSION 0x00
 #define CPSL_MINORVERSION 0x01
 
 #ifdef __cplusplus
