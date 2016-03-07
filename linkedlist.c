@@ -35,6 +35,16 @@ struct CPSL_List *CPSL_List_NewList(const unsigned PerElementSize)
 	return Core;
 }
 
+size_t CPSL_List_CountNodes(register struct CPSL_List *AnyElement)
+{
+	if (!AnyElement) return 0;
+	
+	size_t Counter = 0;
+	
+	for (AnyElement = *AnyElement->Head; AnyElement; AnyElement = AnyElement->Next, ++Counter);
+	
+	return Counter;
+}
 
 CPSL_Bool CPSL_List_DestroyList(struct CPSL_List *ListHead)
 {
